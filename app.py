@@ -4,6 +4,7 @@ import cv2 as cv
 from PIL import Image
 from keras.models import load_model
 from tensorflow.keras import preprocessing
+from keras.preprocessing import image
 
 sign_labels = {
   0: 'Speed limit (20km/h)',
@@ -51,13 +52,6 @@ sign_labels = {
   42: 'End no passing vehicle > 3.5 tons'
 }
 
-from keras.models import load_model
-from keras.preprocessing import image
-import matplotlib.pyplot as plt
-import numpy as np
-import os
-
-
 def load_image(img, show=False):
 
   img_tensor = image.img_to_array(img)                    # (height, width, channels)
@@ -68,8 +62,8 @@ def load_image(img, show=False):
 
 @st.cache
 def sign_predict(image):
-  # model = load_model('./cnn_model/')
-  model = load_model("./cnn_model.h5")
+  # load model
+  model = load_model("cnn_model.h5")
 
   prediction = model.predict_classes(image)
   
@@ -97,26 +91,19 @@ def main():
       file_bytes = np.asarray(bytearray(uploaded_image.read()), dtype=np.uint8)
       opencv_image = cv.imdecode(file_bytes, 1)
       resized_image = cv.resize(opencv_image, (50, 50))
-      print('Resized Dimensions : ',resized_image.shape)
+      
       # Now do something with the image! For example, let's display it:
       st.image(resized_image, use_column_width=True, channels="BGR")
-      # st.image(image, use_column_width=True)
-    # print(image)
+
     procesed_image = load_image(resized_image)
 
     # Make prediction
     prediction_label= sign_predict(procesed_image)
-    print('prediction_label----', prediction_label[0])
-    st.write('### Prediction:')
-    st.write(sign_labels[prediction_label[0]])
-    # st.write('##### Confidence:', str(confidence))
+    st.write('#### Prediction label----: ', prediction_label[0])
+    st.write('### Prediction: ', sign_labels[prediction_label[0]])
+
     st.markdown('***')
 
-    # Markdowns
-    # st.subheader('About')
-    # st.markdown("""
-    # The app uses an implementation of AlexNet Convolutional Neural Network. 
-    # """)
 
 
 if __name__ == '__main__':

@@ -61,7 +61,7 @@ def load_image(img, show=False):
 @st.cache
 def sign_predict(image):
   # load model
-  model = load_model("cnn_model.h5")
+  model = load_model('cnn_model.h5', compile=False)
 
   prediction = model.predict_classes(image)
   

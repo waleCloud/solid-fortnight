@@ -1,9 +1,7 @@
 import numpy as np
 import streamlit as st
 import cv2 as cv
-from PIL import Image
 from keras.models import load_model
-from tensorflow.keras import preprocessing
 from keras.preprocessing import image
 
 sign_labels = {
@@ -54,9 +52,9 @@ sign_labels = {
 
 def load_image(img, show=False):
 
-  img_tensor = image.img_to_array(img)                    # (height, width, channels)
-  img_tensor = np.expand_dims(img_tensor, axis= 0)         # (1, height, width, channels), add a dimension because the model expects this shape: (batch_size, height, width, channels)
-  img_tensor /= 255.                                      # imshow expects values in the range [0, 1]
+  img_tensor = image.img_to_array(img)
+  img_tensor = np.expand_dims(img_tensor, axis= 0)
+  img_tensor /= 255.
 
   return img_tensor
 

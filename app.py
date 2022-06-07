@@ -1,8 +1,8 @@
 import numpy as np
 import streamlit as st
+import tensorflow
 import cv2 as cv
 from keras.models import load_model
-from keras.preprocessing import image
 
 sign_labels = {
   0: 'Speed limit (20km/h)',
@@ -52,7 +52,7 @@ sign_labels = {
 
 def load_image(img, show=False):
 
-  img_tensor = image.img_to_array(img)
+  img_tensor = tensorflow.keras.preprocessing.image.img_to_array(img)
   img_tensor = np.expand_dims(img_tensor, axis= 0)
   img_tensor /= 255.
 

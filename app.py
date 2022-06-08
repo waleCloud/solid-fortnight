@@ -63,9 +63,14 @@ def sign_predict(image):
   # load model
   model = load_model('cnn_model.h5', compile=False)
 
-  prediction = model.predict_classes(image)
-  
-  return prediction
+  prediction = model.predict(image)
+  prediction_max = np.argmax(prediction)
+  prediction_label = sign_labels[prediction_max]
+  confidence = np.max(prediction)
+
+  print('confidence', confidence)
+  print('prediction_label', prediction_label)
+  return prediction_label, confidence
 
 
 def main():
@@ -96,9 +101,9 @@ def main():
     procesed_image = load_image(resized_image)
 
     # Make prediction
-    prediction_label= sign_predict(procesed_image)
-    st.write('#### Prediction label----: ', prediction_label[0])
-    st.write('### Prediction: ', sign_labels[prediction_label[0]])
+    prediction_label, confidence = sign_predict(procesed_image)
+    st.write('#### Prediction label----: ', prediction_label)
+    st.write('### Confidence: ', confidence)
 
     st.markdown('***')
 
